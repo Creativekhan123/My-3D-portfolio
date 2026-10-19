@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0B0D11" />
+  <rect x="2" y="2" width="60" height="60" rx="12" stroke="#222834" stroke-width="2" />
+  <!-- Grid overlay -->
+  <path d="M16 8v48M32 8v48M48 8v48M8 16h48M8 32h48M8 48h48" stroke="#161F2E" stroke-width="1" />
+  <!-- Geometric Core System Icon -->
+  <circle cx="32" cy="32" r="14" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="4 2" />
+  <circle cx="32" cy="32" r="5" fill="#F59E0B" />
+  <!-- Corner Tech Markings -->
+  <path d="M12 18V12H18" stroke="#38BDF8" stroke-width="2" stroke-linecap="square" />
+  <path d="M46 12H52V18" stroke="#38BDF8" stroke-width="2" stroke-linecap="square" />
+  <path d="M12 46V52H18" stroke="#38BDF8" stroke-width="2" stroke-linecap="square" />
+  <path d="M46 52H52V46" stroke="#38BDF8" stroke-width="2" stroke-linecap="square" />
+</svg>
