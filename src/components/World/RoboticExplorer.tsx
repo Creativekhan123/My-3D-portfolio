@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { WORLD_OBSTACLES } from '../../data/worldData';
@@ -11,6 +11,8 @@ interface RoboticExplorerProps {
   nearestExhibit: ExhibitStationInfo | null;
   reducedMotion?: boolean;
   avatarType?: AvatarType;
+  spawnPosition?: [number, number, number];
+  activeRoom?: string;
 }
 
 export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
@@ -19,7 +21,9 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
   onPositionUpdate,
   nearestExhibit,
   reducedMotion = false,
-  avatarType = 'character'
+  avatarType = 'character',
+  spawnPosition = [0, 0, 4.2],
+  activeRoom = 'park'
 }) => {
   // References for avatar transforms and articulated limbs
   const rootGroupRef = useRef<THREE.Group>(null);
@@ -49,7 +53,7 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
 
   // Physics and procedural locomotion state
   const motionState = useRef({
-    position: new THREE.Vector3(0, 0, 0),
+    position: new THREE.Vector3(spawnPosition[0], spawnPosition[1], spawnPosition[2]),
     velocity: new THREE.Vector3(0, 0, 0),
     targetVelocity: new THREE.Vector3(0, 0, 0),
     yaw: 0,
@@ -63,6 +67,18 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
     wheelSpin: 0,
     steerAngle: 0
   });
+
+  const lastRoomRef = useRef<string>(activeRoom);
+  useEffect(() => {
+    if (lastRoomRef.current !== activeRoom) {
+      lastRoomRef.current = activeRoom;
+      motionState.current.position.set(spawnPosition[0], spawnPosition[1], spawnPosition[2]);
+      motionState.current.velocity.set(0, 0, 0);
+      motionState.current.targetVelocity.set(0, 0, 0);
+      motionState.current.yaw = 0;
+      motionState.current.targetYaw = 0;
+    }
+  }, [activeRoom, spawnPosition]);
 
   useFrame((_, delta) => {
     const dt = Math.min(delta, 0.1);

@@ -8,7 +8,7 @@ export const SECTORS: SectorZone[] = [
     code: 'SEC-00',
     description: 'Scenic botanical park with low-poly greenery, reflection pond, and 3 Gateway Doors',
     color: '#22c55e',
-    spawnPoint: [0, 0, 0],
+    spawnPoint: [0, 0, 4.2],
     bounds: { minX: -18, maxX: 18, minZ: -18, maxZ: 18 }
   },
   {
@@ -17,7 +17,7 @@ export const SECTORS: SectorZone[] = [
     code: 'REALM-01',
     description: 'Dynamic arena with floating power crystals, glowing runes, and 4 Game Project LED TVs',
     color: '#f97316',
-    spawnPoint: [0, 0, 5.0],
+    spawnPoint: [0, 0, 2.5],
     bounds: { minX: -16, maxX: 16, minZ: -16, maxZ: 16 }
   },
   {
@@ -26,7 +26,7 @@ export const SECTORS: SectorZone[] = [
     code: 'REALM-02',
     description: 'High-tech industrial robotics workshop with micromouse maze, 6-DOF arm, and 4 Robotics LED TVs',
     color: '#06b6d4',
-    spawnPoint: [0, 0, 5.0],
+    spawnPoint: [0, 0, 2.5],
     bounds: { minX: -16, maxX: 16, minZ: -16, maxZ: 16 }
   },
   {
@@ -35,7 +35,7 @@ export const SECTORS: SectorZone[] = [
     code: 'REALM-03',
     description: 'Cyber-physical hybrid of robotics and game engines with LiDAR holograms and 4 Twin LED TVs',
     color: '#a855f7',
-    spawnPoint: [0, 0, 5.0],
+    spawnPoint: [0, 0, 2.5],
     bounds: { minX: -16, maxX: 16, minZ: -16, maxZ: 16 }
   }
 ];
@@ -51,7 +51,7 @@ export const PARK_DOORS: DoorPortalInfo[] = [
     color: '#f97316',
     position: [-8.5, 0, -8.5],
     rotation: [0, Math.PI / 4, 0],
-    targetSpawn: [0, 0, 5.0],
+    targetSpawn: [0, 0, 2.5],
     interactionRadius: 3.6
   },
   {
@@ -63,7 +63,7 @@ export const PARK_DOORS: DoorPortalInfo[] = [
     color: '#06b6d4',
     position: [0, 0, -12.0],
     rotation: [0, 0, 0],
-    targetSpawn: [0, 0, 5.0],
+    targetSpawn: [0, 0, 2.5],
     interactionRadius: 3.6
   },
   {
@@ -75,7 +75,7 @@ export const PARK_DOORS: DoorPortalInfo[] = [
     color: '#a855f7',
     position: [8.5, 0, -8.5],
     rotation: [0, -Math.PI / 4, 0],
-    targetSpawn: [0, 0, 5.0],
+    targetSpawn: [0, 0, 2.5],
     interactionRadius: 3.6
   }
 ];
@@ -88,9 +88,9 @@ export const RETURN_TO_PARK_DOOR: DoorPortalInfo = {
   sublabel: 'Return to Central Park Hub',
   badge: 'PARK',
   color: '#22c55e',
-  position: [0, 0, 7.5],
+  position: [0, 0, 11.5],
   rotation: [0, Math.PI, 0],
-  targetSpawn: [0, 0, 0],
+  targetSpawn: [0, 0, 4.2],
   interactionRadius: 3.5
 };
 

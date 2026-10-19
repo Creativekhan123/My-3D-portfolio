@@ -25,3 +25,7 @@ dist-ssr
 
 # Temporary / OS
 Thumbs.db
+
+# Test verification files
+0*.png
+test_verification.mjs

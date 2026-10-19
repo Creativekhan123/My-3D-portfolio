@@ -111,7 +111,6 @@ export const ProjectTVStation: React.FC<ProjectTVStationProps> = ({ station, isN
           color={station.accentColor}
           anchorX="center"
           anchorY="middle"
-          font="/fonts/Inter-Bold.woff"
         >
           {`[ ${station.badgeText} ]`}
         </Text>

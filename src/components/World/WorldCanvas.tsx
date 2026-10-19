@@ -36,7 +36,7 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({ onFallbackTo2D }) => {
   const [cameraYaw, setCameraYaw] = useState<number>(0);
 
   const [playerState, setPlayerState] = useState<PlayerState>({
-    position: [0, 0, 0],
+    position: [0, 0, 4.2],
     rotation: 0,
     speed: 0,
     currentSector: 'Greenery Park Hub',
@@ -104,12 +104,13 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({ onFallbackTo2D }) => {
     let sectorName = 'Greenery Park Hub';
 
     if (targetRoomId === 'park' || targetRoomId === 'nexus') {
-      spawn = [0, 0, 0];
+      spawn = [0, 0, 4.2];
       sectorName = 'Greenery Park Hub';
     } else {
       const foundSector = SECTORS.find((s) => s.id === targetRoomId);
       if (foundSector) {
         sectorName = foundSector.name;
+        spawn = foundSector.spawnPoint;
       }
     }
 
@@ -293,6 +294,12 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({ onFallbackTo2D }) => {
           nearestExhibit={playerState.nearestExhibit}
           reducedMotion={reducedMotion}
           avatarType={avatarType}
+          activeRoom={activeRoom}
+          spawnPosition={
+            activeRoom === 'park' || activeRoom === 'nexus'
+              ? [0, 0, 4.2]
+              : SECTORS.find((s) => s.id === activeRoom)?.spawnPoint || [0, 0, 5.0]
+          }
         />
 
         {/* Multi-Room World Architecture & Doors */}

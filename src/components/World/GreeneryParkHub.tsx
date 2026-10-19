@@ -274,7 +274,7 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
       {/* Park Benches for Visitors */}
       <LowPolyParkBench position={[-3.8, 0, 1.8]} rotation={[0, Math.PI / 3, 0]} />
       <LowPolyParkBench position={[3.8, 0, 1.8]} rotation={[0, -Math.PI / 3, 0]} />
-      <LowPolyParkBench position={[0, 0, 4.2]} rotation={[0, Math.PI, 0]} />
+      <LowPolyParkBench position={[0, 0, 8.5]} rotation={[0, Math.PI, 0]} />
 
       {/* Park Lamp Posts */}
       <LowPolyParkLamp position={[-5.8, 0, 4.8]} />

@@ -347,6 +347,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
             {SECTORS.map((sec) => (
               <button
                 key={sec.id}
+                id={`fast-travel-${sec.id}`}
                 onClick={() => {
                   onFastTravel(sec.id);
                   setShowFastTravel(false);

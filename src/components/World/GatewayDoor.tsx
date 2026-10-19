@@ -94,7 +94,6 @@ export const GatewayDoor: React.FC<GatewayDoorProps> = ({ door, isNearby, onEnte
         color={door.color}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/Inter-Bold.woff"
       >
         {`[ ${door.badge} // ${door.label.toUpperCase()} ]`}
       </Text>
