@@ -292,6 +292,7 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({ onFallbackTo2D }) => {
           cameraAngle={cameraYaw}
           onPositionUpdate={handlePositionUpdate}
           nearestExhibit={playerState.nearestExhibit}
+          nearestDoor={playerState.nearestDoor}
           reducedMotion={reducedMotion}
           avatarType={avatarType}
           activeRoom={activeRoom}

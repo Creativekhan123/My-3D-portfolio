@@ -2,13 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { WORLD_OBSTACLES } from '../../data/worldData';
-import type { InputState, ExhibitStationInfo, AvatarType } from '../../types/game';
+import type { InputState, ExhibitStationInfo, DoorPortalInfo, AvatarType } from '../../types/game';
 
 interface RoboticExplorerProps {
   inputRef: React.MutableRefObject<InputState>;
   cameraAngle: number;
   onPositionUpdate: (pos: [number, number, number], rot: number, speed: number) => void;
   nearestExhibit: ExhibitStationInfo | null;
+  nearestDoor?: DoorPortalInfo | null;
   reducedMotion?: boolean;
   avatarType?: AvatarType;
   spawnPosition?: [number, number, number];
@@ -20,6 +21,7 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
   cameraAngle,
   onPositionUpdate,
   nearestExhibit,
+  nearestDoor = null,
   reducedMotion = false,
   avatarType = 'character',
   spawnPosition = [0, 0, 4.2],
@@ -245,35 +247,41 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
         torsoGroupRef.current.rotation.x = isMoving ? -0.06 : 0;
       }
 
+      // Target for interaction reaching (either TV station or Gateway Door)
+      const interactTarget = nearestExhibit || nearestDoor;
+
       // Cute Cartoon Arms
       if (leftArmGroupRef.current && rightArmGroupRef.current) {
-        const leftSwing = isMoving ? -strideSin * 0.5 : Math.sin(m.idleTimer * 2.0) * 0.08;
+        const leftSwing = isMoving ? strideSin * 0.45 : Math.sin(m.idleTimer * 2.0) * 0.08;
         leftArmGroupRef.current.rotation.x = leftSwing;
 
-        if (nearestExhibit) {
+        if (interactTarget) {
           m.interactArmReach = THREE.MathUtils.lerp(m.interactArmReach, 1.0, 0.14);
         } else {
           m.interactArmReach = THREE.MathUtils.lerp(m.interactArmReach, 0.0, 0.15);
         }
 
-        const rightSwing = isMoving ? strideSin * 0.45 : -Math.sin(m.idleTimer * 2.0) * 0.08;
-        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightSwing, -1.3, m.interactArmReach);
-        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(0, -0.3, m.interactArmReach);
+        const rightSwing = isMoving ? -strideSin * 0.45 : -Math.sin(m.idleTimer * 2.0) * 0.08;
+        // Reach arm FORWARD (+1.35 rad) pointing toward the interactive place!
+        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightSwing, 1.35, m.interactArmReach);
+        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(0, -0.22, m.interactArmReach);
+        rightArmGroupRef.current.rotation.z = THREE.MathUtils.lerp(0, -0.12, m.interactArmReach);
       }
 
       // Head Tracking & Expressive Movements
       if (headGroupRef.current) {
-        if (nearestExhibit) {
-          const dx = nearestExhibit.position[0] - m.position.x;
-          const dz = nearestExhibit.position[2] - m.position.z;
+        if (interactTarget) {
+          const targetPos = interactTarget.position;
+          const dx = targetPos[0] - m.position.x;
+          const dz = targetPos[2] - m.position.z;
           const targetWorldAngle = Math.atan2(-dx, -dz);
           let headRelAngle = targetWorldAngle - m.yaw;
           while (headRelAngle > Math.PI) headRelAngle -= Math.PI * 2;
-          while (headRelAngle < -Math.PI) headRelAngle -= Math.PI * 2;
+          while (headRelAngle < -Math.PI) headRelAngle += Math.PI * 2;
 
           headGroupRef.current.rotation.y = THREE.MathUtils.lerp(
             headGroupRef.current.rotation.y,
-            THREE.MathUtils.clamp(headRelAngle, -1.3, 1.3),
+            THREE.MathUtils.clamp(headRelAngle, -1.2, 1.2),
             0.15
           );
           headGroupRef.current.rotation.z = Math.sin(m.idleTimer * 3.0) * 0.05; // curious cartoon tilt
