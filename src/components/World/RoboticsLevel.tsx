@@ -24,6 +24,9 @@ export const RoboticsLevel: React.FC<RoboticsLevelProps> = ({
 
   const miniBotRef = useRef<THREE.Group>(null);
   const robotArmRef = useRef<THREE.Group>(null);
+  const fanRef1 = useRef<THREE.Group>(null);
+  const fanRef2 = useRef<THREE.Group>(null);
+  const beaconRef = useRef<THREE.PointLight>(null);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -57,6 +60,15 @@ export const RoboticsLevel: React.FC<RoboticsLevelProps> = ({
     // Industrial robot arm oscillating joint motion
     if (robotArmRef.current) {
       robotArmRef.current.rotation.y = Math.sin(t * 1.2) * 0.75;
+    }
+
+    // High speed industrial ventilation fan blades
+    if (fanRef1.current) fanRef1.current.rotation.z = t * 8.0;
+    if (fanRef2.current) fanRef2.current.rotation.z = -t * 8.0;
+
+    // Safety beacon flashing
+    if (beaconRef.current) {
+      beaconRef.current.intensity = (Math.sin(t * 6.0) > 0 ? 3.5 : 0.2);
     }
   });
 
@@ -119,6 +131,40 @@ export const RoboticsLevel: React.FC<RoboticsLevelProps> = ({
           <boxGeometry args={[26, 0.25, 0.25]} />
           <meshStandardMaterial color="#0f172a" metalness={0.7} />
         </mesh>
+        {/* Overhead Ventilation Fan 1 */}
+        <group position={[-5, -0.2, 0]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[0.7, 0.85, 16]} />
+            <meshStandardMaterial color="#334155" />
+          </mesh>
+          <group ref={fanRef1}>
+            <mesh rotation={[0, 0, 0]}>
+              <boxGeometry args={[1.3, 0.12, 0.02]} />
+              <meshStandardMaterial color="#06b6d4" />
+            </mesh>
+            <mesh rotation={[0, 0, Math.PI / 2]}>
+              <boxGeometry args={[1.3, 0.12, 0.02]} />
+              <meshStandardMaterial color="#06b6d4" />
+            </mesh>
+          </group>
+        </group>
+        {/* Overhead Ventilation Fan 2 */}
+        <group position={[5, -0.2, 0]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[0.7, 0.85, 16]} />
+            <meshStandardMaterial color="#334155" />
+          </mesh>
+          <group ref={fanRef2}>
+            <mesh rotation={[0, 0, 0]}>
+              <boxGeometry args={[1.3, 0.12, 0.02]} />
+              <meshStandardMaterial color="#06b6d4" />
+            </mesh>
+            <mesh rotation={[0, 0, Math.PI / 2]}>
+              <boxGeometry args={[1.3, 0.12, 0.02]} />
+              <meshStandardMaterial color="#06b6d4" />
+            </mesh>
+          </group>
+        </group>
         {/* Suspended Downward Spotlight on Maze Arena */}
         <spotLight
           position={[0, 0, 0.5]}
@@ -277,6 +323,18 @@ export const RoboticsLevel: React.FC<RoboticsLevelProps> = ({
             <boxGeometry args={[0.14, 0.6, 0.14]} />
             <meshStandardMaterial color="#eab308" />
           </mesh>
+        </group>
+        {/* Safety Warning Flashing Beacon Light */}
+        <group position={[0.85, 1.5, 1.5]}>
+          <mesh position={[0, 0.1, 0]}>
+            <cylinderGeometry args={[0.08, 0.1, 0.2, 8]} />
+            <meshStandardMaterial color="#020617" />
+          </mesh>
+          <mesh position={[0, 0.24, 0]}>
+            <sphereGeometry args={[0.07, 8, 8]} />
+            <meshBasicMaterial color="#eab308" />
+          </mesh>
+          <pointLight ref={beaconRef} position={[0, 0.35, 0]} color="#eab308" intensity={2.5} distance={6} />
         </group>
       </group>
 

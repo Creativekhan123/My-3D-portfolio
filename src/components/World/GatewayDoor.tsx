@@ -13,6 +13,7 @@ interface GatewayDoorProps {
 export const GatewayDoor: React.FC<GatewayDoorProps> = ({ door, isNearby, onEnter }) => {
   const portalGlowRef = useRef<THREE.Mesh>(null);
   const ringRef = useRef<THREE.Mesh>(null);
+  const crestOrbRef = useRef<THREE.Mesh>(null);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -24,6 +25,10 @@ export const GatewayDoor: React.FC<GatewayDoorProps> = ({ door, isNearby, onEnte
       ringRef.current.rotation.z = t * 0.8;
       const s = 1.0 + Math.sin(t * 2.5) * 0.05;
       ringRef.current.scale.set(s, s, s);
+    }
+    if (crestOrbRef.current) {
+      crestOrbRef.current.rotation.y = t * 1.5;
+      crestOrbRef.current.position.y = 4.45 + Math.sin(t * 2.0) * 0.08;
     }
   });
 
@@ -119,12 +124,33 @@ export const GatewayDoor: React.FC<GatewayDoorProps> = ({ door, isNearby, onEnte
         />
       </mesh>
 
+      {/* Floating Rotating Crest Energy Gem */}
+      <mesh ref={crestOrbRef} position={[0, 4.45, 0]}>
+        <octahedronGeometry args={[0.22, 0]} />
+        <meshStandardMaterial
+          color={door.color}
+          emissive={door.color}
+          emissiveIntensity={3.5}
+        />
+      </mesh>
+
+      {/* Vertical Celestial Beacon Beam Shooting Up into Sky */}
+      <mesh position={[0, 10, 0]}>
+        <cylinderGeometry args={[0.15, 0.45, 18, 8]} />
+        <meshBasicMaterial
+          color={door.color}
+          transparent
+          opacity={0.18}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
       {/* Subtle Inner Frame Light */}
       <pointLight
         position={[0, 2.0, 0.4]}
         color={door.color}
-        intensity={isNearby ? 2.5 : 1.2}
-        distance={4.5}
+        intensity={isNearby ? 3.5 : 1.8}
+        distance={6}
       />
 
       {/* Overhead "ENTER [E]" 3D Prompt when Nearby */}

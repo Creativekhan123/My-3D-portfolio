@@ -25,6 +25,8 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
   const crystalRef1 = useRef<THREE.Mesh>(null);
   const crystalRef2 = useRef<THREE.Mesh>(null);
   const swordRef = useRef<THREE.Mesh>(null);
+  const runeRef = useRef<THREE.Mesh>(null);
+  const embersRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -38,6 +40,15 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
     }
     if (swordRef.current) {
       swordRef.current.rotation.y = t * 0.5;
+    }
+    if (runeRef.current) {
+      runeRef.current.rotation.z = -t * 0.6;
+    }
+    if (embersRef.current) {
+      embersRef.current.children.forEach((ember, i) => {
+        ember.position.y = 2.5 + ((t * 0.8 + i * 0.6) % 3.5);
+        ember.position.x += Math.sin(t * 2.0 + i) * 0.003;
+      });
     }
   });
 
@@ -200,6 +211,27 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
         </React.Fragment>
       ))}
 
+      {/* Floating Ember Spark Particles drifting from braziers */}
+      <group ref={embersRef}>
+        {[
+          [-7.5, 3.0, -5],
+          [-7.3, 4.0, -5],
+          [-7.7, 3.5, 2],
+          [-7.4, 4.5, 2],
+          [7.5, 3.2, -5],
+          [7.3, 4.2, -5],
+          [7.6, 3.8, 2],
+          [7.4, 4.8, 2],
+          [0.2, 2.8, -0.2],
+          [-0.2, 3.4, 0.3],
+        ].map(([ex, ey, ez], idx) => (
+          <mesh key={`ember-${idx}`} position={[ex, ey, ez]}>
+            <sphereGeometry args={[0.04, 5, 5]} />
+            <meshBasicMaterial color={idx % 2 === 0 ? "#f97316" : "#fbbf24"} />
+          </mesh>
+        ))}
+      </group>
+
       {/* Floating Glowing Power Crystals */}
       <group position={[-5.5, 0, 1]}>
         <mesh position={[0, 0.7, 0]} castShadow>
@@ -225,6 +257,11 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
 
       {/* Central Rotating Legendary Sword in Stone */}
       <group position={[0, 0, 0]}>
+        {/* Animated Arcane Ground Rune beneath the pedestal */}
+        <mesh ref={runeRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+          <ringGeometry args={[1.5, 1.85, 8]} />
+          <meshBasicMaterial color="#f97316" transparent opacity={0.8} />
+        </mesh>
         <mesh position={[0, 0.35, 0]} castShadow>
           <cylinderGeometry args={[1.1, 1.3, 0.7, 8]} />
           <meshStandardMaterial color="#334155" roughness={0.8} />

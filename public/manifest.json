@@ -1,0 +1,16 @@
+{
+  "short_name": "Devverse 3D",
+  "name": "DEVVERSE — 3D Engineering & Robotics Portfolio",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#080A0E",
+  "theme_color": "#F59E0B",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}

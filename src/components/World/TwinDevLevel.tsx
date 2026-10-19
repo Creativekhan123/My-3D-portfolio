@@ -25,6 +25,8 @@ export const TwinDevLevel: React.FC<TwinDevLevelProps> = ({
   const lidarGlobeRef = useRef<THREE.Mesh>(null);
   const ring1Ref = useRef<THREE.Mesh>(null);
   const ring2Ref = useRef<THREE.Mesh>(null);
+  const telemetryRingRef = useRef<THREE.Mesh>(null);
+  const dataBitsRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -34,6 +36,14 @@ export const TwinDevLevel: React.FC<TwinDevLevelProps> = ({
     }
     if (ring1Ref.current) ring1Ref.current.rotation.z = t * 0.9;
     if (ring2Ref.current) ring2Ref.current.rotation.x = -t * 0.8;
+    if (telemetryRingRef.current) telemetryRingRef.current.rotation.z = -t * 0.5;
+
+    if (dataBitsRef.current) {
+      dataBitsRef.current.children.forEach((bit, i) => {
+        bit.position.y = 1.0 + ((t * 0.7 + i * 0.4) % 2.5);
+        bit.rotation.y = t * 2.0;
+      });
+    }
   });
 
   return (
@@ -125,6 +135,11 @@ export const TwinDevLevel: React.FC<TwinDevLevelProps> = ({
 
       {/* Central Rotating LiDAR Holographic Point Cloud Sphere */}
       <group position={[0, 0, 1.0]}>
+        {/* Animated Cyber Ground Telemetry Ring */}
+        <mesh ref={telemetryRingRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+          <ringGeometry args={[1.6, 1.9, 16]} />
+          <meshBasicMaterial color="#00f5d4" transparent opacity={0.65} />
+        </mesh>
         <mesh position={[0, 0.4, 0]}>
           <cylinderGeometry args={[0.9, 1.1, 0.8, 8]} />
           <meshStandardMaterial color="#0f172a" />
@@ -141,6 +156,21 @@ export const TwinDevLevel: React.FC<TwinDevLevelProps> = ({
           <torusGeometry args={[1.4, 0.02, 8, 24]} />
           <meshBasicMaterial color="#a855f7" />
         </mesh>
+        {/* Floating Telemetry Bit Packets */}
+        <group ref={dataBitsRef}>
+          {[
+            [-0.7, 1.2, 0.6],
+            [0.8, 1.5, -0.5],
+            [-0.5, 2.0, -0.7],
+            [0.6, 2.2, 0.7],
+            [0.0, 2.5, -0.9],
+          ].map(([bx, by, bz], bi) => (
+            <mesh key={`dbit-${bi}`} position={[bx, by, bz]}>
+              <boxGeometry args={[0.07, 0.07, 0.07]} />
+              <meshBasicMaterial color={bi % 2 === 0 ? "#00f5d4" : "#a855f7"} />
+            </mesh>
+          ))}
+        </group>
       </group>
 
       {/* Synchronized Twin Comparison Platforms: Physical vs Simulation */}

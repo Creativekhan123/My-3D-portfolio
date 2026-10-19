@@ -180,7 +180,55 @@ const LowPolyDirectionSign: React.FC<{ position: [number, number, number] }> = (
     {/* Right Arm -> Twin Dev */}
     <mesh position={[0.45, 1.15, 0]} rotation={[0, Math.PI / 4, -0.04]} castShadow>
       <boxGeometry args={[0.85, 0.22, 0.06]} />
-      <meshStandardMaterial color="#9333ea" roughness={0.7} />
+      <meshStandardMaterial color="#8b5cf6" roughness={0.7} />
+    </mesh>
+  </group>
+);
+
+// Low-poly drifting cloud
+const LowPolyCloud: React.FC<{
+  position: [number, number, number];
+  scale?: number;
+}> = ({ position, scale = 1.0 }) => (
+  <group position={position} scale={[scale, scale * 0.6, scale]}>
+    <mesh position={[0, 0, 0]}>
+      <dodecahedronGeometry args={[2.4, 0]} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} flatShading />
+    </mesh>
+    <mesh position={[1.8, -0.2, 0.4]}>
+      <dodecahedronGeometry args={[1.7, 0]} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} flatShading />
+    </mesh>
+    <mesh position={[-1.7, -0.2, -0.3]}>
+      <dodecahedronGeometry args={[1.8, 0]} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} flatShading />
+    </mesh>
+    <mesh position={[0.5, 0.8, -0.2]}>
+      <dodecahedronGeometry args={[1.5, 0]} />
+      <meshStandardMaterial color="#ffffff" roughness={0.9} flatShading />
+    </mesh>
+  </group>
+);
+
+// Low-poly blooming water lotus
+const LowPolyWaterLotus: React.FC = () => (
+  <group>
+    {/* Lotus Pad */}
+    <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <circleGeometry args={[0.5, 12]} />
+      <meshStandardMaterial color="#15803d" />
+    </mesh>
+    {/* Lotus Petals */}
+    {[0, Math.PI / 3, (2 * Math.PI) / 3, Math.PI, (4 * Math.PI) / 3, (5 * Math.PI) / 3].map((angle, i) => (
+      <mesh key={`petal-${i}`} position={[Math.cos(angle) * 0.16, 0.08, Math.sin(angle) * 0.16]} rotation={[0.4, angle, 0]}>
+        <coneGeometry args={[0.1, 0.22, 5]} />
+        <meshStandardMaterial color="#f472b6" roughness={0.5} />
+      </mesh>
+    ))}
+    {/* Golden Center */}
+    <mesh position={[0, 0.14, 0]}>
+      <sphereGeometry args={[0.07, 8, 8]} />
+      <meshBasicMaterial color="#fbbf24" />
     </mesh>
   </group>
 );
@@ -188,6 +236,10 @@ const LowPolyDirectionSign: React.FC<{ position: [number, number, number] }> = (
 export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, onEnterDoor }) => {
   const waterRef = useRef<THREE.Mesh>(null);
   const lilyGroupRef = useRef<THREE.Group>(null);
+  const cloudsRef = useRef<THREE.Group>(null);
+  const firefliesRef = useRef<THREE.Group>(null);
+  const campfireLightRef = useRef<THREE.PointLight>(null);
+  const campfireFlameRef = useRef<THREE.Mesh>(null);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -197,6 +249,24 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
     }
     if (lilyGroupRef.current) {
       lilyGroupRef.current.rotation.y = t * 0.05;
+      lilyGroupRef.current.position.y = 0.03 + Math.sin(t * 1.8) * 0.015;
+    }
+    if (cloudsRef.current) {
+      cloudsRef.current.position.x = ((t * 0.6) % 90) - 45;
+    }
+    if (firefliesRef.current) {
+      firefliesRef.current.children.forEach((child, idx) => {
+        child.position.y += Math.sin(t * 2.5 + idx * 1.1) * 0.005;
+        child.position.x += Math.cos(t * 1.2 + idx * 0.8) * 0.004;
+      });
+    }
+    if (campfireLightRef.current) {
+      campfireLightRef.current.intensity = 1.4 + Math.sin(t * 12) * 0.3 + Math.cos(t * 23) * 0.15;
+    }
+    if (campfireFlameRef.current) {
+      const s = 1.0 + Math.sin(t * 14) * 0.12;
+      campfireFlameRef.current.scale.set(s, s * 1.15, s);
+      campfireFlameRef.current.rotation.y = t * 2.2;
     }
   });
 
@@ -288,7 +358,7 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
           <meshStandardMaterial color="#475569" roughness={0.8} />
         </mesh>
 
-        {/* Floating Green Water Lilies */}
+        {/* Floating Green Water Lilies & Blooming Lotus */}
         <group ref={lilyGroupRef} position={[0, 0.05, 0]}>
           <mesh position={[0.9, 0, 0.7]} rotation={[-Math.PI / 2, 0, 0]}>
             <circleGeometry args={[0.3, 10]} />
@@ -302,6 +372,10 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
             <circleGeometry args={[0.26, 10]} />
             <meshStandardMaterial color="#16a34a" />
           </mesh>
+          {/* Floating pink lotus flower */}
+          <group position={[0.1, 0, 0.2]}>
+            <LowPolyWaterLotus />
+          </group>
         </group>
       </group>
 
@@ -326,6 +400,27 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
       <LowPolyCherryTree position={[4.5, 0, 10.5]} scale={1.05} />
       <LowPolyCherryTree position={[-10.5, 0, -12.5]} scale={1.1} />
       <LowPolyCherryTree position={[10.5, 0, -12.5]} scale={1.1} />
+
+      {/* Bioluminescent Forest Mushrooms at Base of Trees */}
+      {[
+        [-7.2, 0, 7.1, "#38bdf8"],
+        [-7.6, 0, 7.3, "#f472b6"],
+        [7.3, 0, 7.2, "#a855f7"],
+        [7.5, 0, 7.6, "#38bdf8"],
+        [-12.2, 0, 3.3, "#34d399"],
+        [12.8, 0, 3.8, "#f472b6"],
+      ].map(([mx, my, mz, col], mi) => (
+        <group key={`mush-${mi}`} position={[Number(mx), Number(my), Number(mz)]}>
+          <mesh position={[0, 0.08, 0]}>
+            <cylinderGeometry args={[0.03, 0.04, 0.16, 5]} />
+            <meshStandardMaterial color="#f1f5f9" roughness={0.7} />
+          </mesh>
+          <mesh position={[0, 0.17, 0]}>
+            <sphereGeometry args={[0.085, 6, 6]} />
+            <meshBasicMaterial color={String(col)} />
+          </mesh>
+        </group>
+      ))}
 
       {/* Park Benches for Visitors */}
       <LowPolyParkBench position={[-3.8, 0, 1.8]} rotation={[0, Math.PI / 3, 0]} />
@@ -359,6 +454,90 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
           </mesh>
         </group>
       ))}
+
+      {/* Cozy Campfire Rest Area & Travelers Haven */}
+      <group position={[-8.5, 0, 1.2]}>
+        {/* Ring of River Stones */}
+        {[0, 0.78, 1.57, 2.35, 3.14, 3.92, 4.71, 5.49].map((angle, si) => (
+          <mesh
+            key={`cstone-${si}`}
+            position={[Math.cos(angle) * 0.75, 0.1, Math.sin(angle) * 0.75]}
+            scale={[0.7, 0.6, 0.7]}
+          >
+            <dodecahedronGeometry args={[0.18, 0]} />
+            <meshStandardMaterial color="#475569" roughness={0.9} flatShading />
+          </mesh>
+        ))}
+        {/* Charred Firewood Logs */}
+        <mesh position={[0, 0.1, 0]} rotation={[0.2, 0.6, 0.2]}>
+          <cylinderGeometry args={[0.07, 0.08, 0.9, 5]} />
+          <meshStandardMaterial color="#451a03" roughness={0.95} />
+        </mesh>
+        <mesh position={[0, 0.1, 0]} rotation={[-0.2, -0.7, -0.2]}>
+          <cylinderGeometry args={[0.07, 0.08, 0.9, 5]} />
+          <meshStandardMaterial color="#451a03" roughness={0.95} />
+        </mesh>
+        {/* Animated Low-Poly Campfire Flame */}
+        <mesh ref={campfireFlameRef} position={[0, 0.35, 0]}>
+          <coneGeometry args={[0.24, 0.65, 5]} />
+          <meshBasicMaterial color="#ea580c" />
+        </mesh>
+        <mesh position={[0, 0.3, 0]}>
+          <coneGeometry args={[0.14, 0.42, 5]} />
+          <meshBasicMaterial color="#fbbf24" />
+        </mesh>
+        {/* Campfire Warm Flickering Glow */}
+        <pointLight
+          ref={campfireLightRef}
+          position={[0, 0.55, 0]}
+          color="#f97316"
+          intensity={1.5}
+          distance={8}
+          decay={2}
+        />
+        {/* Sitting Log Benches */}
+        <mesh position={[1.4, 0.18, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.16, 0.18, 1.4, 6]} />
+          <meshStandardMaterial color="#78350f" roughness={0.85} />
+        </mesh>
+        <mesh position={[-1.4, 0.18, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.16, 0.18, 1.4, 6]} />
+          <meshStandardMaterial color="#78350f" roughness={0.85} />
+        </mesh>
+      </group>
+
+      {/* Floating Animated Meadow Fireflies */}
+      <group ref={firefliesRef}>
+        {[
+          [-2.2, 0.6, 1.2],
+          [1.9, 0.8, -1.4],
+          [-1.5, 0.5, -2.1],
+          [2.4, 0.7, 1.8],
+          [-5.2, 0.9, 5.4],
+          [4.8, 1.1, 5.2],
+          [-7.8, 1.2, 8.2],
+          [7.2, 0.9, 8.5],
+          [-3.5, 0.6, -6.5],
+          [3.8, 0.7, -6.2],
+          [0.5, 1.3, -3.2],
+          [-1.1, 0.9, 3.8],
+          [-8.5, 1.1, 1.2],
+          [-9.0, 0.8, 2.2],
+        ].map(([fx, fy, fz], idx) => (
+          <mesh key={`firefly-${idx}`} position={[fx, fy, fz]}>
+            <sphereGeometry args={[0.045, 6, 6]} />
+            <meshBasicMaterial color={idx % 2 === 0 ? "#fef08a" : "#a3e635"} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Drifting Low-Poly Sky Clouds */}
+      <group ref={cloudsRef} position={[0, 24, 0]}>
+        <LowPolyCloud position={[-25, 0, -15]} scale={1.8} />
+        <LowPolyCloud position={[10, 2, -22]} scale={2.2} />
+        <LowPolyCloud position={[-5, -1, 18]} scale={1.6} />
+        <LowPolyCloud position={[28, 1, 10]} scale={2.0} />
+      </group>
 
       {/* Directional Navigation Guidepost */}
       <LowPolyDirectionSign position={[1.8, 0, 3.2]} />

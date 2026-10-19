@@ -6,7 +6,8 @@ import {
   Zap,
   Gauge,
   ChevronRight,
-  DoorOpen
+  DoorOpen,
+  Maximize
 } from 'lucide-react';
 import { VirtualJoystick } from '../Input/VirtualJoystick';
 import { SECTORS } from '../../data/worldData';
@@ -263,6 +264,47 @@ export const GameHUD: React.FC<GameHUDProps> = ({
             <Gauge size={14} />
             <span style={{ fontFamily: 'monospace', fontWeight: 700 }}>
               {graphicQuality === 'high' ? 'HIGH' : 'PERF'}
+            </span>
+          </button>
+
+          {/* Fullscreen / Landscape Console Toggle */}
+          <button
+            id="hud-fullscreen-landscape-btn"
+            onClick={async () => {
+              try {
+                if (!document.fullscreenElement) {
+                  await document.documentElement.requestFullscreen();
+                  const screenAny = window.screen as Screen & {
+                    orientation?: { lock?: (o: string) => Promise<void> };
+                  };
+                  if (screenAny.orientation?.lock) {
+                    await screenAny.orientation.lock('landscape');
+                  }
+                } else {
+                  await document.exitFullscreen();
+                }
+              } catch {
+                // ignore
+              }
+            }}
+            style={{
+              background: 'rgba(30, 41, 59, 0.85)',
+              color: '#38bdf8',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              borderRadius: '6px',
+              padding: '8px 10px',
+              fontSize: '11px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              cursor: 'pointer',
+              backdropFilter: 'blur(6px)'
+            }}
+            title="Enter Fullscreen Landscape Mode"
+          >
+            <Maximize size={14} />
+            <span className="hide-on-tiny-screen" style={{ fontWeight: 700 }}>
+              LANDSCAPE
             </span>
           </button>
 

@@ -7,6 +7,7 @@ import { TouchCameraPad } from '../Input/TouchCameraPad';
 import { GameHUD } from '../HUD/GameHUD';
 import { DirectPortfolioModal } from '../DirectPortfolio/DirectPortfolioModal';
 import { ProjectVideoModal } from '../ProjectVideoModal';
+import { MobileLandscapePrompt } from '../HUD/MobileLandscapePrompt';
 import { useInputManager } from '../../hooks/useInputManager';
 import { EXHIBIT_STATIONS, SECTORS, PARK_DOORS, RETURN_TO_PARK_DOOR } from '../../data/worldData';
 import { PROJECTS } from '../../data/projects';
@@ -367,6 +368,9 @@ export const WorldCanvas: React.FC<WorldCanvasProps> = ({ onFallbackTo2D }) => {
         project={activeCaseStudy}
         onClose={handleCloseCaseStudy}
       />
+
+      {/* Mobile Landscape Console Mode Prompt Overlay */}
+      <MobileLandscapePrompt />
     </div>
   );
 };
