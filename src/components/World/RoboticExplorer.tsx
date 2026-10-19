@@ -98,13 +98,34 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
     const inputLength = Math.hypot(rawX, rawZ);
 
     if (inputLength > 0.05) {
-      const moveAngle = Math.atan2(rawX, rawZ) + cameraAngle;
-      const speed = Math.min(inputLength, 1.0) * maxSpeed;
+      // Camera horizontal forward and right vectors:
+      // When cameraAngle = 0, camera is at +Z looking towards -Z.
+      const camForwardX = -Math.sin(cameraAngle);
+      const camForwardZ = -Math.cos(cameraAngle);
+      const camRightX = Math.cos(cameraAngle);
+      const camRightZ = -Math.sin(cameraAngle);
 
-      m.targetVelocity.x = Math.sin(moveAngle) * speed;
-      m.targetVelocity.z = Math.cos(moveAngle) * speed;
-      m.targetYaw = moveAngle;
-      m.idleTimer = 0;
+      // Input: rawX is right/left (-1 to 1), rawZ is forward/backward (-1 to 1)
+      const forwardAmount = -rawZ;
+      const rightAmount = rawX;
+
+      const worldDirX = rightAmount * camRightX + forwardAmount * camForwardX;
+      const worldDirZ = rightAmount * camRightZ + forwardAmount * camForwardZ;
+      const dirLength = Math.hypot(worldDirX, worldDirZ);
+
+      if (dirLength > 0.001) {
+        const normDirX = worldDirX / dirLength;
+        const normDirZ = worldDirZ / dirLength;
+        const speed = Math.min(inputLength, 1.0) * maxSpeed;
+
+        m.targetVelocity.x = normDirX * speed;
+        m.targetVelocity.z = normDirZ * speed;
+
+        // Model's front face is at local -Z.
+        // Heading angle around Y to align local -Z with (normDirX, normDirZ) is Math.atan2(-normDirX, -normDirZ):
+        m.targetYaw = Math.atan2(-normDirX, -normDirZ);
+        m.idleTimer = 0;
+      }
     } else {
       m.targetVelocity.set(0, 0, 0);
       m.idleTimer += dt;
@@ -172,10 +193,10 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
       // MICROCONTROLLER ROVER:
       // A. Wheel rotation based on distance traveled
       m.wheelSpin += (currentSpeed * dt) / 0.22;
-      if (flWheelRef.current) flWheelRef.current.rotation.x = m.wheelSpin;
-      if (frWheelRef.current) frWheelRef.current.rotation.x = m.wheelSpin;
-      if (rlWheelRef.current) rlWheelRef.current.rotation.x = m.wheelSpin;
-      if (rrWheelRef.current) rrWheelRef.current.rotation.x = m.wheelSpin;
+      if (flWheelRef.current) flWheelRef.current.rotation.x = -m.wheelSpin;
+      if (frWheelRef.current) frWheelRef.current.rotation.x = -m.wheelSpin;
+      if (rlWheelRef.current) rlWheelRef.current.rotation.x = -m.wheelSpin;
+      if (rrWheelRef.current) rrWheelRef.current.rotation.x = -m.wheelSpin;
 
       // B. Front Wheel Steering Knuckles
       const targetSteer = THREE.MathUtils.clamp(-angleDiff * 1.5, -0.5, 0.5);
@@ -221,7 +242,7 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
         const waddleBounce = Math.abs(strideSin) * 0.06;
         torsoGroupRef.current.position.y = 0.88 + (isMoving ? waddleBounce : breathing);
         torsoGroupRef.current.rotation.z = isMoving ? -strideSin * 0.06 : 0;
-        torsoGroupRef.current.rotation.x = isMoving ? 0.06 : 0;
+        torsoGroupRef.current.rotation.x = isMoving ? -0.06 : 0;
       }
 
       // Cute Cartoon Arms
@@ -245,7 +266,7 @@ export const RoboticExplorer: React.FC<RoboticExplorerProps> = ({
         if (nearestExhibit) {
           const dx = nearestExhibit.position[0] - m.position.x;
           const dz = nearestExhibit.position[2] - m.position.z;
-          const targetWorldAngle = Math.atan2(dx, dz);
+          const targetWorldAngle = Math.atan2(-dx, -dz);
           let headRelAngle = targetWorldAngle - m.yaw;
           while (headRelAngle > Math.PI) headRelAngle -= Math.PI * 2;
           while (headRelAngle < -Math.PI) headRelAngle -= Math.PI * 2;
