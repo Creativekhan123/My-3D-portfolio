@@ -44,16 +44,21 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
   return (
     <group>
       {/* Dramatic Game Dev Atmosphere: Violet Ambiance & Warm Firelight */}
-      <ambientLight intensity={0.6} color="#581c87" />
-      <directionalLight position={[8, 16, 10]} intensity={1.1} color="#fef08a" castShadow />
-      <pointLight position={[0, 4.5, -2]} color="#f97316" intensity={4.0} distance={18} />
-      <pointLight position={[-6, 3, 0]} color="#a855f7" intensity={3.5} distance={14} />
-      <pointLight position={[6, 3, 0]} color="#a855f7" intensity={3.5} distance={14} />
+      <ambientLight intensity={0.88} color="#7c3aed" />
+      <directionalLight position={[10, 20, 10]} intensity={1.35} color="#fef08a" castShadow />
+      <pointLight position={[0, 5.5, -2]} color="#f97316" intensity={4.5} distance={22} />
+      <pointLight position={[-6, 4, 0]} color="#c084fc" intensity={3.8} distance={16} />
+      <pointLight position={[6, 4, 0]} color="#c084fc" intensity={3.8} distance={16} />
 
-      {/* Dark Stone Combat Arena Floor */}
+      {/* Stylized Stone Combat Arena Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
         <planeGeometry args={[28, 28]} />
-        <meshStandardMaterial color="#090d16" roughness={0.7} />
+        <meshStandardMaterial color="#1e2433" roughness={0.65} />
+      </mesh>
+      {/* Outer Arena Circular Flagstone Paver Ring */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.015, 0]}>
+        <ringGeometry args={[9.5, 12.8, 32]} />
+        <meshStandardMaterial color="#334155" roughness={0.7} />
       </mesh>
 
       {/* Glowing Combat Rune Rings on Ground */}
@@ -65,6 +70,113 @@ export const GameDevLevel: React.FC<GameDevLevelProps> = ({
         <ringGeometry args={[7.2, 7.45, 32]} />
         <meshBasicMaterial color="#a855f7" transparent opacity={0.6} />
       </mesh>
+
+      {/* ============================================================ */}
+      {/* 1. COLOSSEUM AMPHITHEATER WALLS & ARCHITECTURAL ENCLOSURE    */}
+      {/* ============================================================ */}
+      {/* Back Wall (North) */}
+      <mesh position={[0, 3.5, -13.5]} receiveShadow>
+        <boxGeometry args={[27, 7, 1.0]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.85} />
+      </mesh>
+      {/* Left Wall (West) */}
+      <mesh position={[-13.5, 3.5, 0]} receiveShadow>
+        <boxGeometry args={[1.0, 7, 27]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.85} />
+      </mesh>
+      {/* Right Wall (East) */}
+      <mesh position={[13.5, 3.5, 0]} receiveShadow>
+        <boxGeometry args={[1.0, 7, 27]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.85} />
+      </mesh>
+      {/* South Wall (Framing Exit Door) */}
+      <mesh position={[-7.5, 3.5, 13.5]} receiveShadow>
+        <boxGeometry args={[12, 7, 1.0]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.85} />
+      </mesh>
+      <mesh position={[7.5, 3.5, 13.5]} receiveShadow>
+        <boxGeometry args={[12, 7, 1.0]} />
+        <meshStandardMaterial color="#1e293b" roughness={0.85} />
+      </mesh>
+
+      {/* Stepped Arena Seating Tiers along Back and Side Walls */}
+      <mesh position={[0, 0.45, -12.5]}>
+        <boxGeometry args={[25, 0.9, 1.2]} />
+        <meshStandardMaterial color="#334155" roughness={0.8} />
+      </mesh>
+      <mesh position={[0, 1.1, -13.1]}>
+        <boxGeometry args={[25, 1.3, 0.8]} />
+        <meshStandardMaterial color="#0f172a" roughness={0.8} />
+      </mesh>
+
+      {/* Wall Crenellation Battlements along Top */}
+      {[-10, -6, -2, 2, 6, 10].map((x, i) => (
+        <mesh key={`cren-${i}`} position={[x, 7.3, -13.5]}>
+          <boxGeometry args={[1.6, 0.8, 1.1]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.8} />
+        </mesh>
+      ))}
+
+      {/* Hanging Crimson & Gold Heraldic Banners */}
+      {[-8, 8].map((x, i) => (
+        <group key={`banner-${i}`} position={[x, 4.2, -12.95]}>
+          <mesh position={[0, 0.6, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.04, 0.04, 1.8, 8]} />
+            <meshStandardMaterial color="#fbbf24" metalness={0.8} />
+          </mesh>
+          <mesh position={[0, -0.4, 0]}>
+            <planeGeometry args={[1.4, 2.0]} />
+            <meshStandardMaterial color="#991b1b" roughness={0.6} />
+          </mesh>
+          <mesh position={[0, -0.4, 0.01]}>
+            <ringGeometry args={[0.2, 0.35, 6]} />
+            <meshBasicMaterial color="#fbbf24" />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Environmental Storytelling Prop: Open Treasure Chest */}
+      <group position={[-9.5, 0, 5.0]} rotation={[0, Math.PI / 4, 0]}>
+        {/* Chest Base */}
+        <mesh position={[0, 0.3, 0]} castShadow>
+          <boxGeometry args={[1.2, 0.6, 0.75]} />
+          <meshStandardMaterial color="#78350f" roughness={0.8} />
+        </mesh>
+        {/* Gold Trim */}
+        <mesh position={[0, 0.3, 0]}>
+          <boxGeometry args={[1.24, 0.1, 0.79]} />
+          <meshStandardMaterial color="#fbbf24" metalness={0.7} />
+        </mesh>
+        {/* Glowing Treasure Inside */}
+        <mesh position={[0, 0.55, 0]}>
+          <boxGeometry args={[0.9, 0.2, 0.55]} />
+          <meshStandardMaterial color="#fbbf24" emissive="#f59e0b" emissiveIntensity={2.5} />
+        </mesh>
+      </group>
+
+      {/* Environmental Storytelling Prop: Low-Poly Weapon Rack */}
+      <group position={[9.5, 0, 5.0]} rotation={[0, -Math.PI / 4, 0]}>
+        {/* Wooden Frame */}
+        <mesh position={[0, 0.9, 0]} castShadow>
+          <boxGeometry args={[1.4, 1.8, 0.2]} />
+          <meshStandardMaterial color="#451a03" roughness={0.85} />
+        </mesh>
+        {/* Crystalline Broadsword 1 */}
+        <mesh position={[-0.35, 0.9, 0.12]} rotation={[0, 0, -0.15]}>
+          <boxGeometry args={[0.08, 1.4, 0.02]} />
+          <meshStandardMaterial color="#38bdf8" emissive="#0284c7" emissiveIntensity={2.0} />
+        </mesh>
+        {/* Crystalline Broadsword 2 */}
+        <mesh position={[0.35, 0.9, 0.12]} rotation={[0, 0, 0.15]}>
+          <boxGeometry args={[0.08, 1.4, 0.02]} />
+          <meshStandardMaterial color="#f97316" emissive="#ea580c" emissiveIntensity={2.0} />
+        </mesh>
+        {/* Knightly Buckler Shield */}
+        <mesh position={[0, 0.9, 0.14]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.3, 0.3, 0.06, 8]} />
+          <meshStandardMaterial color="#0f172a" metalness={0.8} />
+        </mesh>
+      </group>
 
       {/* Colosseum Stone Pillars with Torch Flames */}
       {[-7.5, 7.5].map((x, i) => (

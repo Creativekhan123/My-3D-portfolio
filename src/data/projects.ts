@@ -117,7 +117,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Rollback Window', value: '250ms Buffer' }
     ],
     verifiedResults: ['Tested with 32 simultaneous simulated connections with zero desync.'],
-    heroImage: '/images/unreal_combat_system.jpg',
+    heroImage: '/images/gas_multiplayer_netcode.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -153,7 +153,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'IK Convergence', value: '100% surface contact' }
     ],
     verifiedResults: ['Enables parkour across any arbitrary static or dynamic mesh without hand-placed markers.'],
-    heroImage: '/images/unreal_combat_system.jpg',
+    heroImage: '/images/motion_warping_parkour.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -189,7 +189,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Decision Latency', value: '< 12ms per decision tick' }
     ],
     verifiedResults: ['Produced lifelike squad maneuvers with realistic combat communication bark triggers.'],
-    heroImage: '/images/unreal_combat_system.jpg',
+    heroImage: '/images/tactical_ai_squad.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -321,7 +321,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'ESC Protocol', value: 'DShot600 Bidirectional' }
     ],
     verifiedResults: ['Achieved rock-solid attitude hold with < 0.5° angular drift under wind turbulence.'],
-    heroImage: '/images/micromouse_maze_robot.jpg',
+    heroImage: '/images/drone_flight_controller.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -357,7 +357,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Encoder Resolution', value: '1,024 Pulses/Revolution' }
     ],
     verifiedResults: ['Maintained straight-line heading deviation under 1.2cm over a 10-meter traversal run.'],
-    heroImage: '/images/robotic_arm_kinematics.jpg',
+    heroImage: '/images/pid_velocity_rover.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -449,7 +449,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Simulation Speed', value: '1.0x - 5.0x Accelerated Time' }
     ],
     verifiedResults: ['Identified and resolved 3 major warehouse aisle deadlock conditions prior to physical facility rollout.'],
-    heroImage: '/images/digital_twin_unreal_ros.jpg',
+    heroImage: '/images/warehouse_fleet_sim.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -485,7 +485,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Sampling Frequency', value: '10Hz - 20Hz Sweep Rate' }
     ],
     verifiedResults: ['Generated synthetic training datasets that achieved 94.2% mAP in physical robot object detection benchmarks.'],
-    heroImage: '/images/digital_twin_unreal_ros.jpg',
+    heroImage: '/images/synthetic_lidar_sim.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'
@@ -521,7 +521,7 @@ export const PROJECTS: ProjectCaseStudy[] = [
       { label: 'Serial Baud Rate', value: '921,600 bps' }
     ],
     verifiedResults: ['Discovered and patched 2 critical motor control firmware edge-cases without risking expensive physical gearboxes.'],
-    heroImage: '/images/digital_twin_unreal_ros.jpg',
+    heroImage: '/images/hil_micro_ros_bench.jpg',
     demoVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     githubUrl: 'https://github.com',
     liveDemoUrl: '#'

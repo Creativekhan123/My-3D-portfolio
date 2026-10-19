@@ -135,7 +135,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, 0.15, 0],
     interactionRadius: 3.6,
     accentColor: '#fb923c',
-    thumbnailUrl: '/images/unreal_combat_system.jpg',
+    thumbnailUrl: '/images/gas_multiplayer_netcode.jpg',
     badgeText: 'Iris Replication / C++',
     description: 'Server-authoritative rollback, client prediction, and replicated ability bitmasks.'
   },
@@ -152,7 +152,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.15, 0],
     interactionRadius: 3.6,
     accentColor: '#fdba74',
-    thumbnailUrl: '/images/unreal_combat_system.jpg',
+    thumbnailUrl: '/images/motion_warping_parkour.jpg',
     badgeText: 'Control Rig / IK',
     description: 'Dynamic 3-stage obstacle scanning and smooth surface-contact hand plant IK.'
   },
@@ -169,7 +169,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.45, 0],
     interactionRadius: 3.6,
     accentColor: '#f97316',
-    thumbnailUrl: '/images/unreal_combat_system.jpg',
+    thumbnailUrl: '/images/tactical_ai_squad.jpg',
     badgeText: 'State Trees / EQS',
     description: 'Hierarchical AI state trees with dynamic flanking and coordinated suppressing fire.'
   },
@@ -224,7 +224,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.15, 0],
     interactionRadius: 3.6,
     accentColor: '#0ea5e9',
-    thumbnailUrl: '/images/micromouse_maze_robot.jpg',
+    thumbnailUrl: '/images/drone_flight_controller.jpg',
     badgeText: 'FreeRTOS / EKF',
     description: 'Custom 4-layer PCB running 800Hz attitude stabilization with DShot600 ESC telemetry.'
   },
@@ -241,7 +241,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.45, 0],
     interactionRadius: 3.6,
     accentColor: '#06b6d4',
-    thumbnailUrl: '/images/robotic_arm_kinematics.jpg',
+    thumbnailUrl: '/images/pid_velocity_rover.jpg',
     badgeText: 'Encoders / STM32',
     description: 'Differential-drive vehicle with optical encoder hardware counters and real-time telemetry.'
   },
@@ -279,7 +279,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, 0.15, 0],
     interactionRadius: 3.6,
     accentColor: '#c084fc',
-    thumbnailUrl: '/images/digital_twin_unreal_ros.jpg',
+    thumbnailUrl: '/images/warehouse_fleet_sim.jpg',
     badgeText: 'UE5 Chaos / Nav2',
     description: 'Coordinating 24 autonomous mobile warehouse robots with dynamic congestion heatmaps.'
   },
@@ -296,7 +296,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.15, 0],
     interactionRadius: 3.6,
     accentColor: '#d8b4fe',
-    thumbnailUrl: '/images/digital_twin_unreal_ros.jpg',
+    thumbnailUrl: '/images/synthetic_lidar_sim.jpg',
     badgeText: 'Compute Shaders / ROS2',
     description: 'Real-time multi-beam laser point cloud generation directly on GPU compute shaders.'
   },
@@ -313,7 +313,7 @@ export const EXHIBIT_STATIONS: ExhibitStationInfo[] = [
     rotation: [0, -0.45, 0],
     interactionRadius: 3.6,
     accentColor: '#a855f7',
-    thumbnailUrl: '/images/digital_twin_unreal_ros.jpg',
+    thumbnailUrl: '/images/hil_micro_ros_bench.jpg',
     badgeText: 'Micro-ROS / FreeRTOS',
     description: 'Physical microcontroller firmware executing real-time control with simulated Unreal sensors.'
   }

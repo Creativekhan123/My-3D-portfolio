@@ -129,6 +129,62 @@ const LowPolyParkLamp: React.FC<{ position: [number, number, number] }> = ({ pos
   </group>
 );
 
+// Low-poly mountain peak for valley horizon
+const LowPolyMountain: React.FC<{
+  position: [number, number, number];
+  scale?: [number, number, number];
+  color?: string;
+}> = ({ position, scale = [1, 1, 1], color = '#475569' }) => (
+  <group position={position} scale={scale}>
+    <mesh position={[0, 8, 0]} castShadow>
+      <coneGeometry args={[14, 18, 6]} />
+      <meshStandardMaterial color={color} roughness={0.9} flatShading />
+    </mesh>
+    {/* Snow or highlight cap */}
+    <mesh position={[0, 14.5, 0]}>
+      <coneGeometry args={[5.2, 6.5, 6]} />
+      <meshStandardMaterial color="#f8fafc" roughness={0.7} flatShading />
+    </mesh>
+  </group>
+);
+
+// Low-poly garden rock/boulder
+const LowPolyRock: React.FC<{
+  position: [number, number, number];
+  scale?: number;
+  rotation?: [number, number, number];
+}> = ({ position, scale = 1.0, rotation = [0, 0, 0] }) => (
+  <mesh position={position} scale={[scale, scale * 0.7, scale]} rotation={rotation} castShadow>
+    <dodecahedronGeometry args={[0.5, 0]} />
+    <meshStandardMaterial color="#64748b" roughness={0.85} flatShading />
+  </mesh>
+);
+
+// Low-poly direction signpost
+const LowPolyDirectionSign: React.FC<{ position: [number, number, number] }> = ({ position }) => (
+  <group position={position}>
+    <mesh position={[0, 1.1, 0]} castShadow>
+      <cylinderGeometry args={[0.08, 0.1, 2.2, 6]} />
+      <meshStandardMaterial color="#78350f" roughness={0.9} />
+    </mesh>
+    {/* Left Arm -> Game Dev */}
+    <mesh position={[-0.45, 1.8, 0]} rotation={[0, -Math.PI / 4, 0.04]} castShadow>
+      <boxGeometry args={[0.85, 0.22, 0.06]} />
+      <meshStandardMaterial color="#ea580c" roughness={0.7} />
+    </mesh>
+    {/* Center Arm -> Robotics */}
+    <mesh position={[0, 1.45, -0.45]} rotation={[0, 0, 0]} castShadow>
+      <boxGeometry args={[0.06, 0.22, 0.85]} />
+      <meshStandardMaterial color="#0284c7" roughness={0.7} />
+    </mesh>
+    {/* Right Arm -> Twin Dev */}
+    <mesh position={[0.45, 1.15, 0]} rotation={[0, Math.PI / 4, -0.04]} castShadow>
+      <boxGeometry args={[0.85, 0.22, 0.06]} />
+      <meshStandardMaterial color="#9333ea" roughness={0.7} />
+    </mesh>
+  </group>
+);
+
 export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, onEnterDoor }) => {
   const waterRef = useRef<THREE.Mesh>(null);
   const lilyGroupRef = useRef<THREE.Group>(null);
@@ -304,8 +360,41 @@ export const GreeneryParkHub: React.FC<GreeneryParkHubProps> = ({ nearestDoor, o
         </group>
       ))}
 
+      {/* Directional Navigation Guidepost */}
+      <LowPolyDirectionSign position={[1.8, 0, 3.2]} />
+
+      {/* Natural River Boulders Around Pond & Garden Beds */}
+      <LowPolyRock position={[2.8, 0.1, 0.6]} scale={1.2} rotation={[0.2, 0.5, 0]} />
+      <LowPolyRock position={[-2.7, 0.1, -0.7]} scale={1.1} rotation={[-0.1, 1.2, 0]} />
+      <LowPolyRock position={[1.3, 0.1, -2.6]} scale={0.9} rotation={[0.3, -0.4, 0]} />
+      <LowPolyRock position={[-1.4, 0.1, 2.5]} scale={1.0} rotation={[0, 0.8, -0.2]} />
+      <LowPolyRock position={[0.3, 0.1, 3.1]} scale={0.8} rotation={[0.4, 0.2, 0]} />
+      <LowPolyRock position={[-6.2, 0.1, 8.2]} scale={1.3} rotation={[0.1, 0.6, 0]} />
+      <LowPolyRock position={[6.2, 0.1, 8.2]} scale={1.3} rotation={[-0.2, -0.5, 0]} />
+
+      {/* Stepping Stones on Plaza Trails */}
+      {[-2.2, -1.5, -0.8, 0.8, 1.5, 2.2].map((x, i) => (
+        <mesh key={`step-${i}`} position={[x * 0.9, 0.025, 6.2]} rotation={[-Math.PI / 2, 0, 0]}>
+          <circleGeometry args={[0.28, 7]} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.8} flatShading />
+        </mesh>
+      ))}
+
       {/* ============================================================ */}
-      {/* 4. THE 3 MANDATORY GATEWAY DOORS IN THE PARK                 */}
+      {/* 4. LOW-POLY VALLEY MOUNTAIN HORIZON ENCLOSURE                */}
+      {/* ============================================================ */}
+      {/* Enclosing ring of majestic low-poly mountains to eliminate endless void */}
+      <LowPolyMountain position={[-34, -1, -30]} scale={[1.2, 1.3, 1.2]} color="#334155" />
+      <LowPolyMountain position={[0, -1, -44]} scale={[1.4, 1.5, 1.4]} color="#1e293b" />
+      <LowPolyMountain position={[34, -1, -30]} scale={[1.2, 1.3, 1.2]} color="#334155" />
+      <LowPolyMountain position={[-42, -1, 5]} scale={[1.1, 1.2, 1.1]} color="#475569" />
+      <LowPolyMountain position={[42, -1, 5]} scale={[1.1, 1.2, 1.1]} color="#475569" />
+      <LowPolyMountain position={[-28, -1, 34]} scale={[1.0, 1.1, 1.0]} color="#334155" />
+      <LowPolyMountain position={[28, -1, 34]} scale={[1.0, 1.1, 1.0]} color="#334155" />
+      <LowPolyMountain position={[0, -1, 40]} scale={[1.2, 1.25, 1.2]} color="#1e293b" />
+
+      {/* ============================================================ */}
+      {/* 5. THE 3 MANDATORY GATEWAY DOORS IN THE PARK                 */}
       {/* ============================================================ */}
       {PARK_DOORS.map((door) => (
         <GatewayDoor

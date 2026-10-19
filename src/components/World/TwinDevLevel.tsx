@@ -45,14 +45,83 @@ export const TwinDevLevel: React.FC<TwinDevLevelProps> = ({
       <pointLight position={[-5, 3.5, 0]} color="#a855f7" intensity={3.0} distance={14} />
       <pointLight position={[5, 3.5, 0]} color="#38bdf8" intensity={3.0} distance={14} />
 
-      {/* Cyber-Physical Glass Floor with Glowing Wireframe Grid Beneath */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
-        <planeGeometry args={[28, 28]} />
-        <meshStandardMaterial color="#020617" roughness={0.15} metalness={0.9} />
+      {/* ============================================================ */}
+      {/* 1. SPLIT-BAY CYBER-PHYSICAL FLOOR DESIGN                     */}
+      {/* ============================================================ */}
+      {/* Left Bay: Physical Industrial Test Cell (Steel Plate) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-7, 0.01, 0]} receiveShadow>
+        <planeGeometry args={[14, 28]} />
+        <meshStandardMaterial color="#0f172a" roughness={0.45} metalness={0.65} />
       </mesh>
 
-      {/* Matrix Cyan Grid on Floor */}
-      <gridHelper args={[26, 26, '#00f5d4', '#0f766e']} position={[0, 0.02, 0]} />
+      {/* Right Bay: Virtual Simulation Twin (Dark Mirror Glass) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[7, 0.01, 0]} receiveShadow>
+        <planeGeometry args={[14, 28]} />
+        <meshStandardMaterial color="#020617" roughness={0.08} metalness={0.95} />
+      </mesh>
+
+      {/* Central Division Line: Cyber-Physical Threshold */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
+        <planeGeometry args={[0.3, 28]} />
+        <meshBasicMaterial color="#00f5d4" transparent opacity={0.8} />
+      </mesh>
+
+      {/* Matrix Cyan Grid across Simulation Half */}
+      <group position={[7, 0.025, 0]}>
+        <gridHelper args={[14, 14, '#00f5d4', '#0f766e']} />
+      </group>
+
+      {/* ============================================================ */}
+      {/* 2. HIGH-DENSITY SERVER RACKS & COMPUTE TOWERS                */}
+      {/* ============================================================ */}
+      {[-9.5, -6.5, 6.5, 9.5].map((x, i) => (
+        <group key={`server-${i}`} position={[x, 0, -12.5]}>
+          {/* Main 42U Server Cabinet */}
+          <mesh position={[0, 2.2, 0]} castShadow>
+            <boxGeometry args={[1.8, 4.4, 1.2]} />
+            <meshStandardMaterial color="#090d16" roughness={0.2} metalness={0.7} />
+          </mesh>
+          {/* Glass Door with Neon Bezel */}
+          <mesh position={[0, 2.2, 0.62]}>
+            <planeGeometry args={[1.6, 4.0]} />
+            <meshStandardMaterial color="#020617" transparent opacity={0.6} roughness={0.1} />
+          </mesh>
+          {/* Blinking Status LED Arrays */}
+          {[0.8, 1.6, 2.4, 3.2].map((y, j) => (
+            <mesh key={`led-${j}`} position={[-0.5 + (j % 2) * 1.0, y, 0.63]}>
+              <boxGeometry args={[0.15, 0.05, 0.02]} />
+              <meshBasicMaterial color={j % 2 === 0 ? '#22c55e' : '#00f5d4'} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+
+      {/* ============================================================ */}
+      {/* 3. FLOATING HOLOGRAPHIC TELEMETRY HUD SCREENS                */}
+      {/* ============================================================ */}
+      {/* Left HUD: Hardware In-The-Loop CAN-FD Status */}
+      <group position={[-5.8, 3.2, 0]} rotation={[0, 0.35, 0]}>
+        <mesh>
+          <planeGeometry args={[2.8, 1.2]} />
+          <meshBasicMaterial color="#020617" transparent opacity={0.8} />
+        </mesh>
+        <mesh>
+          <boxGeometry args={[2.84, 1.24, 0.02]} />
+          <meshBasicMaterial color="#06b6d4" wireframe />
+        </mesh>
+      </group>
+
+      {/* Right HUD: Synthetic LiDAR Raycasting Telemetry */}
+      <group position={[5.8, 3.2, 0]} rotation={[0, -0.35, 0]}>
+        <mesh>
+          <planeGeometry args={[2.8, 1.2]} />
+          <meshBasicMaterial color="#020617" transparent opacity={0.8} />
+        </mesh>
+        <mesh>
+          <boxGeometry args={[2.84, 1.24, 0.02]} />
+          <meshBasicMaterial color="#a855f7" wireframe />
+        </mesh>
+      </group>
 
       {/* Central Rotating LiDAR Holographic Point Cloud Sphere */}
       <group position={[0, 0, 1.0]}>
